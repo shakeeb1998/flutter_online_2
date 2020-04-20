@@ -109,6 +109,8 @@ class _ThirdComponentState extends State<ThirdComponent> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
+        //todo  task make compent reusable
+
         Column(
           children: <Widget>[
             Icon(Icons.star),
