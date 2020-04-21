@@ -12,82 +12,104 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  dynamic cic = new ContainerWithInContainer();
+  static dynamic color = Colors.purple;
+  dynamic container = new Container(
+    height: 100,
+    width: 100,
+    color: color,);
 
+
+//  dynamic color = Colors.red;
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      home: Scaffold(
+      home:new  Scaffold(
         appBar: new AppBar(
           title: new Text("Screen One"),
         ),
 
-        body :MyContainer()
+        body : new InkWell(
+          child: ContainerWithInContainer(),
+          onTap: (){
+            print("shakeeb");
+            setState(() {
+              color=Colors.blue;
+            });
+          },
+        ),
       ),
 
     );
   }
 }
 
-class MyContainer extends StatefulWidget {
 
+class ContainerWithInContainer extends StatefulWidget {
   @override
-  _MyContainerState createState() => _MyContainerState();
+  _ContainerWithInContainerState createState() => _ContainerWithInContainerState();
 }
 
-class _MyContainerState extends State<MyContainer> {
+class _ContainerWithInContainerState extends State<ContainerWithInContainer> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blue,
+      child: Stack(
+        children: <Widget>[
+          Align(
+            alignment: Alignment(0.5,0),
+            child: Container(
+              color: Colors.red,
+              height: 100,
+              width: 100,
+            ),
+          ),
+          Align(
+            alignment: MyAlign(x: -1,y: -1),
+            child: Container(
+              color: Colors.purple,
+              height: 50,
+              width: 50,
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
+}
+
+
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-//      mainAxisAlignment:MainAxisAlignment.spaceAround,
       children: <Widget>[
-        Image.network(
-          "https://ichef.bbci.co.uk/news/1024/cpsprodpb/83D7/production/_111515733_gettyimages-1208779325.jpg",
-          height: MediaQuery.of(context).size.height*0.35,
+        Container(
+//          color: color,
+          height: 100,
+          width: 100,
+
         ),
-        SecondComponent(),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ThirdComponent(),
-        )
-      ],
-    );
-  }
-}
 
-
-
-
-
-class SecondComponent extends StatefulWidget {
-  @override
-  _SecondComponentState createState() => _SecondComponentState();
-}
-
-class _SecondComponentState extends State<SecondComponent> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 4,top: 4),
+        new RaisedButton(onPressed:(){
+          setState(() {
+//                color=Colors.blue;
+            Navigator.push(context, new MaterialPageRoute(builder:
+                (context)=>new ScreenTwo(name: "Shakeeb",)));
+          });
+        } ,color: Colors.red,
           child: Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              new Text("lkdlsakld"),
-              new Text("okjdndkasdjl"),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: <Widget>[
-              Icon(Icons.star),
-              new Text("32"),
-
-
+              new Text("press me"),
+              new Text("tdmk"),
             ],
           ),
         )
@@ -98,42 +120,40 @@ class _SecondComponentState extends State<SecondComponent> {
 
 
 
-class ThirdComponent extends StatefulWidget {
+class ScreenTwo extends StatefulWidget {
+  String name;
+  ScreenTwo({
+
+   @required this.name
+
+  });
+
   @override
-  _ThirdComponentState createState() => _ThirdComponentState();
+  _ScreenTwoState createState() => _ScreenTwoState();
 }
 
-class _ThirdComponentState extends State<ThirdComponent> {
+class _ScreenTwoState extends State<ScreenTwo> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        //todo  task make compent reusable
+    return Scaffold(
+      appBar: AppBar(
+        title: new Text(widget.name),
 
-        Column(
-          children: <Widget>[
-            Icon(Icons.star),
-            new Text("jjkjjnjj"),
-
-          ],
-        ),
-
-        Column(
-          children: <Widget>[
-            Icon(Icons.star),
-            new Text("jjkjjnjj"),
-
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Icon(Icons.star),
-            new Text("jjkjjnjj"),
-
-          ],
-        ),
-      ],
+      ),
     );
+  }
+}
+
+
+
+class MyAlign extends Alignment{
+  double x,y;
+  MyAlign({this.x,this.y}) : super(transform(x: x), y){
+
+  }
+
+  static double transform( {double x}){
+
+    return x;
   }
 }
