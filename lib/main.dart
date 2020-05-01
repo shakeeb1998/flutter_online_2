@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_online_2/rows_and_columns.dart';
+import 'package:flutter_online_2/second.dart';
 
 void main() {
-
   runApp(new MyApp());
 //  Person(name: "dd",);
 }
@@ -11,32 +12,94 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+class ContainerVaribles {
+  dynamic color = Colors.purple;
+}
+
 class _MyAppState extends State<MyApp> {
-  dynamic cic = new ContainerWithInContainer();
-  static dynamic color = Colors.purple;
-  dynamic container = new Container(
-    height: 100,
-    width: 100,
-    color: color,);
+  ValueNotifier colorNotifier = new ValueNotifier({"color": ""});
+  ContainerVaribles cv = new ContainerVaribles();
 
 
 //  dynamic color = Colors.red;
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      home:new  Scaffold(
+      home: new Scaffold(
         appBar: new AppBar(
           title: new Text("Screen One"),
         ),
 
-        body : new InkWell(
-          child: ContainerWithInContainer(),
-          onTap: (){
-            print("shakeeb");
-            setState(() {
-              color=Colors.blue;
-            });
-          },
+        body: Column(
+          children: <Widget>[
+
+            Flexible(
+                flex: 30,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        color: Colors.red,
+                        child: Row(
+                          children: <Widget>[
+//                          new Text("ss"),
+                            Flexible(
+                              flex: 50,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      color: Colors.green,
+                                      child: ContainerOne(width: 50.0,height: 50.0,),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Flexible(
+                              flex: 50,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                        color: Colors.grey,
+                                        child: Center(
+                                          child: ContainerOne(
+                                            width: 50.0, height: 50.0,color: Colors.grey,),
+                                        ),
+
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+
+                          ],
+                        ),
+
+                      ),
+                    ),
+                  ],
+                )
+
+            ),
+
+            Flexible(
+              flex: 40,
+              child: Container(
+                color: Colors.blue,
+              ),
+            ),
+
+            Flexible(
+              flex: 30,
+              child: Container(
+                color: Colors.purple,
+              ),
+            )
+
+
+          ],
         ),
       ),
 
@@ -45,115 +108,56 @@ class _MyAppState extends State<MyApp> {
 }
 
 
-class ContainerWithInContainer extends StatefulWidget {
+class ContainerOne extends StatefulWidget {
+  dynamic height, width, color;
+
+
+  ContainerOne(
+      {this.height = 100.0, this.width = 100.0, this.color = Colors.blue}) {
+    print("new object");
+  }
+
   @override
-  _ContainerWithInContainerState createState() => _ContainerWithInContainerState();
+  _ContainerOneState createState() => _ContainerOneState();
 }
 
-class _ContainerWithInContainerState extends State<ContainerWithInContainer> {
+class _ContainerOneState extends State<ContainerOne> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("re initilizing state");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
-      child: Stack(
-        children: <Widget>[
-          Align(
-            alignment: Alignment(0.5,0),
-            child: Container(
-              color: Colors.red,
-              height: 100,
-              width: 100,
-            ),
-          ),
-          Align(
-            alignment: MyAlign(x: -1,y: -1),
-            child: Container(
-              color: Colors.purple,
-              height: 50,
-              width: 50,
-            ),
-          ),
-
-        ],
-      ),
+      height: widget.width,
+      width: widget.height,
+      color: widget.color,
+      child: Text("hello"),
     );
   }
 }
 
 
-
-class Body extends StatefulWidget {
+class ContainerTwp extends StatefulWidget {
   @override
-  _BodyState createState() => _BodyState();
+  _ContainerTwpState createState() => _ContainerTwpState();
 }
 
-class _BodyState extends State<Body> {
+class _ContainerTwpState extends State<ContainerTwp> {
+  dynamic height, width, color;
+
+  _ContainerTwpState(
+      {this.color = Colors.red, this.width = 100, this.height = 100});
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-//          color: color,
-          height: 100,
-          width: 100,
-
-        ),
-
-        new RaisedButton(onPressed:(){
-          setState(() {
-//                color=Colors.blue;
-            Navigator.push(context, new MaterialPageRoute(builder:
-                (context)=>new ScreenTwo(name: "Shakeeb",)));
-          });
-        } ,color: Colors.red,
-          child: Column(
-            children: <Widget>[
-              new Text("press me"),
-              new Text("tdmk"),
-            ],
-          ),
-        )
-      ],
+    return Container(
+      height: height,
+      width: width,
+      color: color,
     );
-  }
-}
-
-
-
-class ScreenTwo extends StatefulWidget {
-  String name;
-  ScreenTwo({
-
-   @required this.name
-
-  });
-
-  @override
-  _ScreenTwoState createState() => _ScreenTwoState();
-}
-
-class _ScreenTwoState extends State<ScreenTwo> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: new Text(widget.name),
-
-      ),
-    );
-  }
-}
-
-
-
-class MyAlign extends Alignment{
-  double x,y;
-  MyAlign({this.x,this.y}) : super(transform(x: x), y){
-
-  }
-
-  static double transform( {double x}){
-
-    return x;
   }
 }
