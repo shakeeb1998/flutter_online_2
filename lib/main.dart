@@ -3,6 +3,7 @@ import 'package:flutter_online_2/rows_and_columns.dart';
 import 'package:flutter_online_2/second.dart';
 
 void main() {
+
   runApp(new MyApp());
 //  Person(name: "dd",);
 }
@@ -19,6 +20,8 @@ class ContainerVaribles {
 class _MyAppState extends State<MyApp> {
   ValueNotifier colorNotifier = new ValueNotifier({"color": ""});
   ContainerVaribles cv = new ContainerVaribles();
+  ValueNotifier valueNotifier = new ValueNotifier("test val");
+  String text="";
 
 
 //  dynamic color = Colors.red;
@@ -26,81 +29,15 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return new MaterialApp(
       home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text("Screen One"),
-        ),
+        appBar: new AppBar(title: new Text(text),),
+          body: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+            CTextF(valueNotifier: valueNotifier,),
+            CButton(valueNotifier: valueNotifier,),
 
-        body: Column(
-          children: <Widget>[
-
-            Flexible(
-                flex: 30,
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        color: Colors.red,
-                        child: Row(
-                          children: <Widget>[
-//                          new Text("ss"),
-                            Flexible(
-                              flex: 50,
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      color: Colors.green,
-                                      child: ContainerOne(width: 50.0,height: 50.0,),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Flexible(
-                              flex: 50,
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                        color: Colors.grey,
-                                        child: Center(
-                                          child: ContainerOne(
-                                            width: 50.0, height: 50.0,color: Colors.grey,),
-                                        ),
-
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-
-                          ],
-                        ),
-
-                      ),
-                    ),
-                  ],
-                )
-
-            ),
-
-            Flexible(
-              flex: 40,
-              child: Container(
-                color: Colors.blue,
-              ),
-            ),
-
-            Flexible(
-              flex: 30,
-              child: Container(
-                color: Colors.purple,
-              ),
-            )
-
-
-          ],
-        ),
+            CText(valueNotifier: valueNotifier,),
+          ],)
       ),
 
     );
@@ -108,56 +45,84 @@ class _MyAppState extends State<MyApp> {
 }
 
 
-class ContainerOne extends StatefulWidget {
-  dynamic height, width, color;
+class CText extends StatefulWidget {
+  ValueNotifier valueNotifier;
+  CText({
 
-
-  ContainerOne(
-      {this.height = 100.0, this.width = 100.0, this.color = Colors.blue}) {
-    print("new object");
-  }
-
+   @required this.valueNotifier});
   @override
-  _ContainerOneState createState() => _ContainerOneState();
+  _CTextState createState() => _CTextState();
 }
 
-class _ContainerOneState extends State<ContainerOne> {
+class _CTextState extends State<CText> {
+//  ValueNotifier valueNotifier = ValueNotifier("Text");
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("re initilizing state");
+    widget.valueNotifier.addListener(list);
   }
 
+  list(){
+    print("dd");
+    setState(() {
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.width,
-      width: widget.height,
-      color: widget.color,
-      child: Text("hello"),
-    );
+    return Text(widget.valueNotifier.value);
   }
 }
 
 
-class ContainerTwp extends StatefulWidget {
+class CButton extends StatefulWidget {
+  ValueNotifier valueNotifier;
+  CButton({this.valueNotifier});
   @override
-  _ContainerTwpState createState() => _ContainerTwpState();
+  _CButtonState createState() => _CButtonState();
 }
 
-class _ContainerTwpState extends State<ContainerTwp> {
-  dynamic height, width, color;
+class _CButtonState extends State<CButton> {
+  @override
+  Widget build(BuildContext context) {
+    return new RaisedButton(onPressed: (){
 
-  _ContainerTwpState(
-      {this.color = Colors.red, this.width = 100, this.height = 100});
+    },child: new Text("tap"),);
+  }
+}
+
+
+
+class CTextF extends StatefulWidget {
+  ValueNotifier valueNotifier;
+  CTextF({this.valueNotifier});
+  @override
+  _CTextFState createState() => _CTextFState();
+}
+
+class _CTextFState extends State<CTextF> {
+  TextEditingController textEditingController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    textEditingController = new TextEditingController(text: widget.valueNotifier.value);
+
+    textEditingController.addListener(listever);
+  }
+  listever(){
+    print("val changed ${textEditingController.text   }");
+
+    widget.valueNotifier.value=textEditingController.text;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      color: color,
+    return TextFormField(
+      controller: textEditingController,
     );
   }
 }
